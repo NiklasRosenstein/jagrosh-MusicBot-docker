@@ -4,15 +4,9 @@ on:
   push:
     branches: ["main"]
 
-env:
-  LATEST_VERSION: "0.4.3"
-
 jobs:
   docker-build:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        VERSION: ["0.4.0", "0.4.1", "0.4.2", "0.4.3"]
     permissions:
       contents: read
       packages: write
@@ -37,9 +31,7 @@ jobs:
           context: .
           push: true
           tags: |
-            ghcr.io/niklasrosenstein/jagrosh-musicbot-docker:${{ matrix.VERSION }}
-            ${{ env.LATEST_VERSION == matrix.VERSION && format('ghcr.io/niklasrosenstein/jagrosh-musicbot-docker:latest', matrix.VERSION) || '' }}
-          build-args: |
-            VERSION=${{ matrix.VERSION }}
+            ghcr.io/niklasrosenstein/jagrosh-musicbot-docker:0.4.3-fixed
+            ghcr.io/niklasrosenstein/jagrosh-musicbot-docker:latest
           cache-from: |
-            type=registry,ref=ghcr.io/niklasrosenstein/jagrosh-musicbot-docker:${{ matrix.VERSION }}
+            type=registry,ref=ghcr.io/niklasrosenstein/jagrosh-musicbot-docker:0.4.3-fixed
